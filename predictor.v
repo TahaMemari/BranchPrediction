@@ -1,5 +1,10 @@
-module predictor(input wire request, result, clk, taken, output reg prediction);
-
+module predictor (
+  input wire request, // Request signal
+  input wire clk, // Clock signal
+  input wire taken, // Taken signal
+  output reg prediction, // Prediction signal
+  output reg result // Result signal (for testing)
+);
 
   parameter TAKEN = 2'b11; // Strongly taken state
   parameter NOT_TAKEN = 2'b00; // Strongly not taken state
@@ -17,6 +22,8 @@ module predictor(input wire request, result, clk, taken, output reg prediction);
   always @(posedge clk) begin
     if (request) begin
       case (state)
+Continued code:
+
         WEAKLY_NOT_TAKEN: begin
           if (taken) begin
             state <= WEAKLY_TAKEN;
@@ -27,7 +34,7 @@ module predictor(input wire request, result, clk, taken, output reg prediction);
         WEAKLY_TAKEN: begin
           if (taken) begin
             state <= TAKEN;
-         end else begin
+          end else begin
             state <= WEAKLY_NOT_TAKEN;
           end
         end
