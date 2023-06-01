@@ -6,6 +6,7 @@ module predictor(
    output reg prediction    // Output prediction
 );
 
+   
    reg [1:0] counter = 2'b11;  // 2-bit Up/Down counter
       
    always @(posedge clk) begin
