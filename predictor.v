@@ -1,73 +1,30 @@
-module predictor (
-  input wire request, // Request signal
-  input wire clk, // Clock signal
-  input wire taken, // Taken signal
-  output reg prediction, // Prediction signal
-  output reg result // Result signal (for testing)
+module predictor(
+   input wire request,      // Request to make prediction   
+   input wire clk,          // Clock signal
+   input wire taken,        // Feedback if previous branch was taken  
+   output reg prediction    // Output prediction
 );
 
-  parameter TAKEN = 2'b11; // Strongly taken state
-  parameter NOT_TAKEN = 2'b00; // Strongly not taken state
-  parameter WEAKLY_TAKEN = 2'b10; // Weakly taken state
-  parameter WEAKLY_NOT_TAKEN = 2'b01; // Weakly not taken state
-
-  reg [1:0] state; // State of the predictor
-
-  // Initialize the state to weakly not taken
-  initial begin
-    state = WEAKLY_NOT_TAKEN;
-    result = 0;
-  end
-
-  always @(posedge clk) begin
-    if (request) begin
-      case (state)
-Continued code:
-
-        WEAKLY_NOT_TAKEN: begin
-          if (taken) begin
-            state <= WEAKLY_TAKEN;
-          end else begin
-            state <= WEAKLY_NOT_TAKEN;
-          end
-        end
-        WEAKLY_TAKEN: begin
-          if (taken) begin
-            state <= TAKEN;
-          end else begin
-            state <= WEAKLY_NOT_TAKEN;
-          end
-        end
-        TAKEN: begin
-          if (!taken) begin
-            state <= WEAKLY_TAKEN;
-          end else begin
-            state <= TAKEN;
-          end
-        end
-        default: begin // WEAKLY_NOT_TAKEN
-          state <= WEAKLY_NOT_TAKEN;
-        end
-      endcase
-    end
-  end
-
-  // Output the prediction based on the current state
-  always @(state or taken) begin
-    case (state)
-      WEAKLY_NOT_TAKEN: begin
-        prediction = 0;
-      end
-      WEAKLY_TAKEN: begin
-        prediction = taken;
-      end
-      TAKEN: begin
-        prediction = 1;
-      end
-      default: begin // WEAKLY_NOT_TAKEN
-        prediction = 0;
-      end
-    endcase
-  end
-
+   reg [1:0] counter = 2'd0;  // 2-bit Up/Down counter
+      
+   always @(posedge clk) begin
+      if (request) begin    
+         if (taken) begin
+            if (counter < 2'd3)    
+               counter <= counter + 1'b1; 
+            else
+               counter <= 2'd3; 
+         end
+         else begin   
+            if (counter > 2'd0)
+               counter <= counter - 1'b1;
+            else      
+               counter <= 2'd0;                
+         end 
+         
+         // Prediction based on MSB of counter           
+         prediction <= counter[1];           
+      end           
+   end
+               
 endmodule
