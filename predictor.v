@@ -1,10 +1,5 @@
-module predictor (
-  input wire request, // Request signal
-  input clk, // Clock signal
-  input taken, // Taken signal
-  output reg prediction, // Prediction signal
-  output reg result // Result signal (for testing)
-);
+module predictor(input wire request, result, clk, taken, output reg prediction);
+
 
   parameter TAKEN = 2'b11; // Strongly taken state
   parameter NOT_TAKEN = 2'b00; // Strongly not taken state
