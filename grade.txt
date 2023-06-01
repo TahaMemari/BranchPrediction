@@ -1,7 +1,4 @@
-Thu Jun  1 07:19:44 UTC 2023
-predictor.v:25: syntax error
-predictor.v:29: Syntax in assignment statement l-value.
-predictor.v:25: error: Incomprehensible case expression.
-predictor.v:30: syntax error
-predictor.v:34: error: Incomprehensible case expression.
+Thu Jun  1 07:26:39 UTC 2023
+TESTS_DIR/predictor-test.v:9: error: Wrong number of ports. Expecting 4, got 5.
+1 error(s) during elaboration.
 An error occurred when opening .vcd file '.tmp.vcd'
